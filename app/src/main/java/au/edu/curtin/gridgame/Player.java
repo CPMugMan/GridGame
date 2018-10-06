@@ -23,7 +23,7 @@ public class Player
         equipmentList = new ArrayList<Equipment>();
     }
 
-    public void move()
+    public void moveHealth()
     {
         health = Math.max(0.0, health - 5.0 - (equipmentMass / 2.0));
     }
