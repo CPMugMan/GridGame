@@ -22,6 +22,7 @@ public class NavigationActivity extends AppCompatActivity
     private Button overviewButton;
     private TextView xCoord;
     private TextView yCoord;
+    private TextView testText;
 
 
     @Override
@@ -124,12 +125,22 @@ public class NavigationActivity extends AppCompatActivity
         overviewButton = (Button)findViewById(R.id.overviewButton);
         xCoord = (TextView)findViewById(R.id.xCoord);
         yCoord = (TextView)findViewById(R.id.yCoord);
+        testText = (TextView)findViewById(R.id.testText);
     }
 
     public void updateUI()
     {
         xCoord.setText(Integer.toString(gameData.getPlayer().getColLocation()));
         yCoord.setText(Integer.toString(gameData.getPlayer().getRowLocation()));
+        if(gameData.getArea(gameData.getPlayer().getColLocation(),gameData.getPlayer().getRowLocation()).getTown() == false)
+        {
+            testText.setText("Wilderness");
+        }
+        else
+        {
+            testText.setText("Town");
+        }
+
     }
 
     public void cantMove()
