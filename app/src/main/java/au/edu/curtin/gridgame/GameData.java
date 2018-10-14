@@ -133,6 +133,11 @@ public class GameData
         }
     }
 
+    public Area getCurrArea()
+    {
+        return getArea(getColPosition(),getRowPosition());
+    }
+
 
 
 
