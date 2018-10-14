@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class GameData
 {
+    private static GameData instance = null;
+
     private Area[][] grid;
     private List<Item> itemList;
     private int x;
@@ -16,15 +18,24 @@ public class GameData
 
     public GameData()
     {
-        x = 50;
-        y = 50;
-        grid = new Area[x][y];
-        itemList = new ArrayList<Item>();
-        random = new Random();
-        player = new Player();
+        this.x = 50;
+        this.y = 50;
+        this.grid = new Area[x][y];
+        this.itemList = new ArrayList<Item>();
+        this.random = new Random();
+        this.player = new Player();
         createItems();
         randomTheMap();
 
+    }
+
+    public static GameData get()
+    {
+        if(instance == null)
+        {
+            instance = new GameData();
+        }
+        return instance;
     }
 
     public boolean positionCheck(int xCheck, int yCheck)
@@ -55,6 +66,18 @@ public class GameData
     {
         player.setColLocation(player.getColLocation() + x);
         player.setRowLocation(player.getRowLocation() + y);
+        player.moveHealth();
+
+    }
+
+    public int getColPosition()
+    {
+        return getPlayer().getColLocation();
+    }
+
+    public int getRowPosition()
+    {
+        return getPlayer().getRowLocation();
     }
 
     public void movePlayerHealth()
@@ -64,13 +87,13 @@ public class GameData
 
     public void createItems()
     {
-        Equipment equipment1 = new Equipment("Rune Sword",10,10.0);
+        Equipment equipment1 = new Equipment("(づ￣ ³￣)づ",10,10.0);
         Equipment equipment2 = new Equipment("Ordinary Shield",15,4.0);
         Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0);
         Equipment equipment4 = new Equipment("Macbook Pro",70,1.0);
         Equipment equipment5 = new Equipment("Chromebook",30,5.0);
 
-        Food food1 = new Food("Big Mac",7,30.0);
+        Food food1 = new Food("Big Mac aka sean",7,30.0);
         Food food2 = new Food("Coffee",4,50.0);
         Food food3 = new Food("Chicken Nuggets",20,40);
         Food food4 = new Food("Ramen",25,33);
@@ -95,19 +118,22 @@ public class GameData
 
     public void randomTheMap()
     {
+
         for(int i =0; i<=49;i++)
         {
             for(int j =0;j<=49;j++)
             {
-                grid[i][j] = new Area(obtainRandom());
+                grid[i][j] = new Area(random.nextBoolean());
+                for(int k = 0; k <=random.nextInt(16); k++) //Only allows a max of 15 items per area
+                {
+                    grid[i][j].addItem(itemList.get(random.nextInt(10)));
+                }
+
             }
         }
     }
 
-    public boolean obtainRandom()
-    {
-        return random.nextBoolean();
-    }
+
 
 
 
