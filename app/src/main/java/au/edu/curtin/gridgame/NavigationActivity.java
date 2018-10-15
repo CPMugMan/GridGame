@@ -1,5 +1,6 @@
 package au.edu.curtin.gridgame;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,9 @@ public class NavigationActivity extends AppCompatActivity
     private TextView xCoord;
     private TextView yCoord;
     private AreaInfoFragment fragA;
+    private StatusBarFragment fragB;
+    //private static final int REQUEST_CODE_WILDERNESS = 0;
+    //private static final int REQUEST_CODE_MARKET = 1;
 
 
     @Override
@@ -37,17 +41,26 @@ public class NavigationActivity extends AppCompatActivity
 
         FragmentManager fm = getSupportFragmentManager();
         fragA = (AreaInfoFragment)fm.findFragmentById(R.id.af_container);
+        fragB = (StatusBarFragment)fm.findFragmentById(R.id.sb_container);
         if(fragA == null)
         {
             fragA = new AreaInfoFragment();
             fm.beginTransaction()
                     .add(R.id.af_container, fragA).commit();
         }
+        if(fragB == null)
+        {
+            fragB = new StatusBarFragment();
+            fm.beginTransaction()
+                    .add(R.id.sb_container,fragB).commit();
+        }
 
         builder = new AlertDialog.Builder(NavigationActivity.this);
         builder.setCancelable(true);
 
         initialButton();
+
+        //testMethod();
 
         northButton.setOnClickListener(new View.OnClickListener()
         {
@@ -121,6 +134,27 @@ public class NavigationActivity extends AppCompatActivity
                 }
             }
         });
+
+        optionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent;
+                if(gameData.getCurrArea().getTown() == false)
+                {
+                    intent = new Intent(NavigationActivity.this,WildernessActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    intent = new Intent(NavigationActivity.this,MarketActivity.class);
+                    startActivity(intent);
+                }
+
+
+            }
+        });
     }
 
     public void initialButton()
@@ -142,6 +176,7 @@ public class NavigationActivity extends AppCompatActivity
         xCoord.setText(Integer.toString(gameData.getPlayer().getColLocation()));
         yCoord.setText(Integer.toString(gameData.getPlayer().getRowLocation()));
         fragA.updateUI();
+        fragB.updateUI();
 
     }
 
@@ -149,6 +184,21 @@ public class NavigationActivity extends AppCompatActivity
     {
         builder.setMessage("Cannot Move there");
         builder.show();
+    }
+
+    public void testMethod()
+    {
+        Equipment equipment1 = new Equipment("(づ￣ ³￣)づ",10,10.0);
+        Equipment equipment2 = new Equipment("iPhone",15,4.0);
+        Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0);
+        Equipment equipment4 = new Equipment("Macbook Pro",70,1.0);
+        Equipment equipment5 = new Equipment("Chromebook",30,5.0);
+        gameData.getPlayer().addEquipment(equipment1);
+        gameData.getPlayer().addEquipment(equipment2);
+        gameData.getPlayer().addEquipment(equipment3);
+        gameData.getPlayer().addEquipment(equipment4);
+        gameData.getPlayer().addEquipment(equipment5);
+
     }
 
 

@@ -88,12 +88,12 @@ public class GameData
     public void createItems()
     {
         Equipment equipment1 = new Equipment("(づ￣ ³￣)づ",10,10.0);
-        Equipment equipment2 = new Equipment("Ordinary Shield",15,4.0);
+        Equipment equipment2 = new Equipment("iPhone",15,4.0);
         Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0);
         Equipment equipment4 = new Equipment("Macbook Pro",70,1.0);
         Equipment equipment5 = new Equipment("Chromebook",30,5.0);
 
-        Food food1 = new Food("Big Mac aka sean",7,30.0);
+        Food food1 = new Food("Big Mac",7,30.0);
         Food food2 = new Food("Coffee",4,50.0);
         Food food3 = new Food("Chicken Nuggets",20,40);
         Food food4 = new Food("Ramen",25,33);
