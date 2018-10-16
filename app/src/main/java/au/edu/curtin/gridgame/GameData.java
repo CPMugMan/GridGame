@@ -92,6 +92,9 @@ public class GameData
         Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0);
         Equipment equipment4 = new Equipment("Macbook Pro",70,1.0);
         Equipment equipment5 = new Equipment("Chromebook",30,5.0);
+        Equipment equipment6 = new Equipment("Portable Smell-O-Scope",40,5.0);
+        Equipment equipment7 = new Equipment("Improbability Drive",30,10);
+        Equipment equipment8 = new Equipment("Ben Kenobi",30,0.0);
 
         Food food1 = new Food("Big Mac",7,30.0);
         Food food2 = new Food("Coffee",4,50.0);
@@ -108,6 +111,9 @@ public class GameData
         itemList.add(equipment3);
         itemList.add(equipment4);
         itemList.add(equipment5);
+        itemList.add(equipment6);
+        itemList.add(equipment7);
+        itemList.add(equipment8);
         itemList.add(food1);
         itemList.add(food2);
         itemList.add(food3);
@@ -126,7 +132,7 @@ public class GameData
                 grid[i][j] = new Area(random.nextBoolean());
                 for(int k = 0; k <=random.nextInt(16); k++) //Only allows a max of 15 items per area
                 {
-                    grid[i][j].addItem(itemList.get(random.nextInt(10)));
+                    grid[i][j].addItem(itemList.get(random.nextInt(13)));
                 }
 
             }
@@ -136,6 +142,30 @@ public class GameData
     public Area getCurrArea()
     {
         return getArea(getColPosition(),getRowPosition());
+    }
+
+    public String use(Item inItem)
+    {
+        String msg;
+
+        if(inItem.getDescription().equals("Portable Smell-O-Scope"))
+        {
+            msg = "Portable Smell-O-Scope Used";
+        }
+        else if(inItem.getDescription().equals("Improbability Drive"))
+        {
+            randomTheMap();
+            msg = "Improbability Drive Used";
+        }
+        else
+        {
+            
+            msg = "Ben Kenobi Used";
+        }
+
+        getPlayer().getList().remove(inItem);
+
+        return msg;
     }
 
 

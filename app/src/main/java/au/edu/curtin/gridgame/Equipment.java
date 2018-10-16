@@ -22,4 +22,5 @@ public class Equipment extends Item
         super.setValue(inValue);
         mass = inMass;
     }
+
 }

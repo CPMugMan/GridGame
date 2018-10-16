@@ -28,8 +28,8 @@ public class NavigationActivity extends AppCompatActivity
     private TextView yCoord;
     private AreaInfoFragment fragA;
     private StatusBarFragment fragB;
-    //private static final int REQUEST_CODE_WILDERNESS = 0;
-    //private static final int REQUEST_CODE_MARKET = 1;
+    private static final int REQUEST_CODE_WILDERNESS = 0;
+    private static final int REQUEST_CODE_MARKET = 1;
 
 
     @Override
@@ -59,8 +59,6 @@ public class NavigationActivity extends AppCompatActivity
         builder.setCancelable(true);
 
         initialButton();
-
-        //testMethod();
 
         northButton.setOnClickListener(new View.OnClickListener()
         {
@@ -144,12 +142,12 @@ public class NavigationActivity extends AppCompatActivity
                 if(gameData.getCurrArea().getTown() == false)
                 {
                     intent = new Intent(NavigationActivity.this,WildernessActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_CODE_WILDERNESS);
                 }
                 else
                 {
                     intent = new Intent(NavigationActivity.this,MarketActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent,REQUEST_CODE_MARKET);
                 }
 
 
@@ -186,20 +184,18 @@ public class NavigationActivity extends AppCompatActivity
         builder.show();
     }
 
-    public void testMethod()
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnData)
     {
-        Equipment equipment1 = new Equipment("(づ￣ ³￣)づ",10,10.0);
-        Equipment equipment2 = new Equipment("iPhone",15,4.0);
-        Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0);
-        Equipment equipment4 = new Equipment("Macbook Pro",70,1.0);
-        Equipment equipment5 = new Equipment("Chromebook",30,5.0);
-        gameData.getPlayer().addEquipment(equipment1);
-        gameData.getPlayer().addEquipment(equipment2);
-        gameData.getPlayer().addEquipment(equipment3);
-        gameData.getPlayer().addEquipment(equipment4);
-        gameData.getPlayer().addEquipment(equipment5);
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_WILDERNESS || requestCode == REQUEST_CODE_MARKET)
+        {
+            updateUI();
+            fragB.updateUI();
+            fragA.updateUI();
+        }
 
     }
+
 
 
 

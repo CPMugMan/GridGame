@@ -62,8 +62,9 @@ public class WildernessActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(WildernessActivity.this,NavigationActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
 
@@ -190,6 +191,7 @@ public class WildernessActivity extends AppCompatActivity
         private TextView itemMass2;
         private Button buy2;
         private Item currItem2;
+        private Button use;
 
         public PlayerVHolder(LayoutInflater li, ViewGroup parent)
         {
@@ -197,8 +199,10 @@ public class WildernessActivity extends AppCompatActivity
             itemName2 = (TextView)itemView.findViewById(R.id.itemName);
             itemValue2 = (TextView)itemView.findViewById(R.id.value);
             itemMass2 = (TextView)itemView.findViewById(R.id.mass);
+            use  = (Button)itemView.findViewById(R.id.use);
             buy2 = (Button)itemView.findViewById(R.id.buy);
             buy2.setText("Drop");
+
             buy2.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -210,6 +214,27 @@ public class WildernessActivity extends AppCompatActivity
                     fragA.updateUI();
                     adapter.notifyDataSetChanged();
                     adapter1.notifyDataSetChanged();
+
+                }
+            });
+
+            use.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if(currItem2.getDescription().equals("Portable Smell-O-Scope") || currItem2.getDescription().equals("Improbability Drive") || currItem2.getDescription().equals("Ben Kenobi"))
+                    {
+                        showMessage(gameData.use(currItem2));
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK,intent);
+                        finish();
+                    }
+                    else
+                    {
+                        showMessage("Cannot use that Item");
+                    }
+
 
                 }
             });
