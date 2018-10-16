@@ -51,8 +51,8 @@ public class StatusBarFragment extends Fragment
     public void updateUI()
     {
         cash.setText("Cash :" +(Integer.toString(data.getPlayer().getCash())));
-        health.setText("  Health : " +(Double.toString(data.getPlayer().getHealth())) );
-        equipmentMass.setText("   Equipment Mass : " +(Double.toString(data.getPlayer().getEquipmentMass())));
+        health.setText("Health : " +(Double.toString(data.getPlayer().getHealth())) );
+        equipmentMass.setText("Equipment Mass : " +(Double.toString(data.getPlayer().getEquipmentMass())));
     }
 
 

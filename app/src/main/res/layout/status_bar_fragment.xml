@@ -12,23 +12,23 @@
 
     <TextView
         android:id="@+id/HealthText"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="    Health : 100 "
+        android:text="Health : 100 "
         />
 
     <TextView
         android:id="@+id/EquipValue"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text=" Equipment Mass : 100"
+        android:text="Equipment Mass : 100"
         />
 
     <Button
         android:id="@+id/RestartButton"
         android:textSize="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="Restart"
         />
 
