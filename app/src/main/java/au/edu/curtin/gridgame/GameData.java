@@ -159,7 +159,26 @@ public class GameData
         }
         else
         {
-            
+            for(int j = 0; j < getCurrArea().getList().size();j++)
+            {
+                if(getCurrArea().getList().get(j) instanceof Equipment)
+                {
+                    getPlayer().setEquipmentMass(getPlayer().getEquipmentMass() + ((Equipment) getCurrArea().getList().get(j)).getMassorHealth());
+                }
+                if(getCurrArea().getList().get(j) instanceof Food)
+                {
+                    getPlayer().setHealth(getPlayer().getHealth() + ((Food) getCurrArea().getList().get(j)).getMassorHealth());
+                    getCurrArea().getList().remove(getCurrArea().getList().get(j));
+                }
+
+            }
+            for(int i =0; i< getCurrArea().getList().size();i++)
+            {
+                getPlayer().getList().add(getCurrArea().getList().get(i));
+
+            }
+            getCurrArea().getList().clear();
+
             msg = "Ben Kenobi Used";
         }
 
