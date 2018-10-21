@@ -9,6 +9,8 @@ public abstract class Item
 
     public abstract String getType();
 
+    public abstract boolean isThisFood();
+
     public void setDescription(String inDescription)
     {
         description = inDescription;

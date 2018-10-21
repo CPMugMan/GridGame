@@ -22,4 +22,10 @@ public class Food extends Item
     {
         return "Health";
     }
+
+    @Override
+    public boolean isThisFood()
+    {
+        return true;
+    }
 }

@@ -30,6 +30,7 @@ public class NavigationActivity extends AppCompatActivity
     private StatusBarFragment fragB;
     private static final int REQUEST_CODE_WILDERNESS = 0;
     private static final int REQUEST_CODE_MARKET = 1;
+    private static final int REQUEST_CODE_OVERVIEW = 2;
 
 
     @Override

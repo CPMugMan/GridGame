@@ -25,6 +25,8 @@ public class MarketActivity extends AppCompatActivity
     private AlertDialog.Builder builder;
     private MarketAdapter adapter;
     private PlayerAdapter adapter1;
+    private static final int REQUEST_CODE_SMELLY = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -196,6 +198,7 @@ public class MarketActivity extends AppCompatActivity
         private TextView itemValue2;
         private TextView itemMass2;
         private Button buy2;
+        private Button use2;
         private Item currItem2;
 
         public PlayerVHolder(LayoutInflater li, ViewGroup parent)
@@ -205,6 +208,7 @@ public class MarketActivity extends AppCompatActivity
             itemValue2 = (TextView)itemView.findViewById(R.id.value);
             itemMass2 = (TextView)itemView.findViewById(R.id.mass);
             buy2 = (Button)itemView.findViewById(R.id.buy);
+            use2 = (Button)itemView.findViewById(R.id.use);
             buy2.setText("Sell");
             buy2.setOnClickListener(new View.OnClickListener()
             {
@@ -219,6 +223,43 @@ public class MarketActivity extends AppCompatActivity
                     adapter.notifyDataSetChanged();
                     adapter1.notifyDataSetChanged();
 
+                }
+            });
+
+            use2.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if(currItem2.getDescription().equals("Portable Smell-O-Scope"))
+                    {
+                        Intent intent = new Intent(MarketActivity.this,SmellActivity.class);
+                        startActivityForResult(intent,REQUEST_CODE_SMELLY);
+                        showMessage("Smell-O-Scope Used");
+                    }
+                    else if(currItem2.getDescription().equals("Improbability Drive"))
+                    {
+                        gameData.improbDrive();
+                        showMessage("Improbability Drive Used");
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+
+                    }
+                    else if(currItem2.getDescription().equals("Ben Kenobi"))
+                    {
+                        showMessage("Ben Kenobi Used");
+                        gameData.benKen();
+                        fragA.updateUI();
+                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
+
+                    }
+                    else
+                    {
+                        showMessage("Cannot use that Item");
+                    }
                 }
             });
 

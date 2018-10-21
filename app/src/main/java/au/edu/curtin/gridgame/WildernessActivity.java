@@ -25,6 +25,7 @@ public class WildernessActivity extends AppCompatActivity
     private AlertDialog.Builder builder;
     private MarketAdapter adapter;
     private PlayerAdapter adapter1;
+    private static final int REQUEST_CODE_SMELLY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -223,12 +224,30 @@ public class WildernessActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    if(currItem2.getDescription().equals("Portable Smell-O-Scope") || currItem2.getDescription().equals("Improbability Drive") || currItem2.getDescription().equals("Ben Kenobi"))
+                    if(currItem2.getDescription().equals("Portable Smell-O-Scope"))
                     {
-                        showMessage(gameData.use(currItem2));
+                        Intent intent = new Intent(WildernessActivity.this,SmellActivity.class);
+                        startActivityForResult(intent,REQUEST_CODE_SMELLY);
+                        showMessage("Smell-O-Scope Used");
+                    }
+                    else if(currItem2.getDescription().equals("Improbability Drive"))
+                    {
+                        gameData.improbDrive();
+                        showMessage("Improbability Drive Used");
                         Intent intent = new Intent();
                         setResult(RESULT_OK,intent);
                         finish();
+
+
+                    }
+                    else if(currItem2.getDescription().equals("Ben Kenobi"))
+                    {
+                        showMessage("Ben Kenobi Used");
+                        gameData.benKen();
+                        fragA.updateUI();
+                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
+
                     }
                     else
                     {

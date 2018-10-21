@@ -18,7 +18,13 @@
         </activity>
         <activity android:name=".NavigationActivity" />
         <activity android:name=".MarketActivity" />
-        <activity android:name=".WildernessActivity"></activity>
+        <activity android:name=".WildernessActivity" />
+        <activity
+            android:name=".SmelloScopeActivity"
+            android:label="@string/title_activity_smello_scope"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SmellOScopeActivity" />
+        <activity android:name=".SmellActivity"></activity>
     </application>
 
 </manifest>

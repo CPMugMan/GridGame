@@ -15,6 +15,7 @@ public class GameData
     private int y;
     private Player player;
     private Random random;
+    private List <Item> smellyList;
 
     public GameData()
     {
@@ -144,47 +145,36 @@ public class GameData
         return getArea(getColPosition(),getRowPosition());
     }
 
-    public String use(Item inItem)
+
+    public void improbDrive()
     {
-        String msg;
+        randomTheMap();
+    }
 
-        if(inItem.getDescription().equals("Portable Smell-O-Scope"))
+    public void benKen()
+    {
+        List<Equipment> addList = new ArrayList<Equipment>();
+
+        for(int j = 0; j < getCurrArea().getList().size();j++)
         {
-            msg = "Portable Smell-O-Scope Used";
-        }
-        else if(inItem.getDescription().equals("Improbability Drive"))
-        {
-            randomTheMap();
-            msg = "Improbability Drive Used";
-        }
-        else
-        {
-            for(int j = 0; j < getCurrArea().getList().size();j++)
+            if(getCurrArea().getList().get(j) instanceof Equipment)
             {
-                if(getCurrArea().getList().get(j) instanceof Equipment)
-                {
-                    getPlayer().setEquipmentMass(getPlayer().getEquipmentMass() + ((Equipment) getCurrArea().getList().get(j)).getMassorHealth());
-                }
-                if(getCurrArea().getList().get(j) instanceof Food)
-                {
-                    getPlayer().setHealth(getPlayer().getHealth() + ((Food) getCurrArea().getList().get(j)).getMassorHealth());
-                    getCurrArea().getList().remove(getCurrArea().getList().get(j));
-                }
-
+                getPlayer().setEquipmentMass(getPlayer().getEquipmentMass() + ((Equipment) getCurrArea().getList().get(j)).getMassorHealth());
+                addList.add((Equipment)getCurrArea().getList().get(j));
             }
-            for(int i =0; i< getCurrArea().getList().size();i++)
+            if(getCurrArea().getList().get(j) instanceof Food)
             {
-                getPlayer().getList().add(getCurrArea().getList().get(i));
-
+                getPlayer().setHealth(getPlayer().getHealth() + ((Food) getCurrArea().getList().get(j)).getMassorHealth());
             }
-            getCurrArea().getList().clear();
 
-            msg = "Ben Kenobi Used";
         }
+        for(int i =0; i< addList.size();i++)
+        {
+            getPlayer().getList().add(addList.get(i));
 
-        getPlayer().getList().remove(inItem);
+        }
+        getCurrArea().getList().clear();
 
-        return msg;
     }
 
 

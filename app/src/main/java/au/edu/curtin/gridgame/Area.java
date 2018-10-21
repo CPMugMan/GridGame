@@ -55,7 +55,7 @@ public class Area
         return items.get(inIndex);
     }
 
-    public List getList()
+    public List<Item> getList()
     {
         return items;
     }

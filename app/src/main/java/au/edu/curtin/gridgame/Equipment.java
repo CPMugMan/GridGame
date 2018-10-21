@@ -16,6 +16,13 @@ public class Equipment extends Item
         return "Mass";
     }
 
+    @Override
+    public boolean isThisFood()
+    {
+        return false;
+    }
+
+
     public Equipment(String inDescription, int inValue, double inMass)
     {
         super.setDescription(inDescription);
