@@ -135,11 +135,16 @@ public class WildernessActivity extends AppCompatActivity
                         {
                             gameData.getPlayer().addEquipment((Equipment)currItem);
                             gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() + currItem.getMassorHealth());
+                            if(((Equipment) currItem).isWinningItem())
+                            {
+                                gameData.boughtWinningItem((Equipment)currItem );
+                            }
                         }
                         gameData.getCurrArea().getList().remove(currItem);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        checkState();
 
 
                 }
@@ -191,7 +196,7 @@ public class WildernessActivity extends AppCompatActivity
         private TextView itemValue2;
         private TextView itemMass2;
         private Button buy2;
-        private Item currItem2;
+        private Equipment currItem2;
         private Button use;
 
         public PlayerVHolder(LayoutInflater li, ViewGroup parent)
@@ -209,12 +214,19 @@ public class WildernessActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v)
                 {
-                    gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() - currItem2.getMassorHealth());
-                    gameData.getCurrArea().getList().add(currItem2);
-                    gameData.getPlayer().getList().remove(currItem2);
-                    fragA.updateUI();
-                    adapter.notifyDataSetChanged();
-                    adapter1.notifyDataSetChanged();
+                    if(currItem2.isWinningItem())
+                    {
+                        showMessage("Don't sell that you need it to win :D");
+                    }
+                    else
+                    {
+                        gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() - currItem2.getMassorHealth());
+                        gameData.getCurrArea().getList().add(currItem2);
+                        gameData.getPlayer().getList().remove(currItem2);
+                        fragA.updateUI();
+                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
+                    }
 
                 }
             });
@@ -229,9 +241,11 @@ public class WildernessActivity extends AppCompatActivity
                         Intent intent = new Intent(WildernessActivity.this,SmellActivity.class);
                         startActivityForResult(intent,REQUEST_CODE_SMELLY);
                         showMessage("Smell-O-Scope Used");
+                        gameData.getPlayer().getList().remove(currItem2);
                     }
                     else if(currItem2.getDescription().equals("Improbability Drive"))
                     {
+                        gameData.getPlayer().getList().remove(currItem2);
                         gameData.improbDrive();
                         showMessage("Improbability Drive Used");
                         Intent intent = new Intent();
@@ -242,6 +256,7 @@ public class WildernessActivity extends AppCompatActivity
                     }
                     else if(currItem2.getDescription().equals("Ben Kenobi"))
                     {
+                        gameData.getPlayer().getList().remove(currItem2);
                         showMessage("Ben Kenobi Used");
                         gameData.benKen();
                         fragA.updateUI();
@@ -253,6 +268,7 @@ public class WildernessActivity extends AppCompatActivity
                     {
                         showMessage("Cannot use that Item");
                     }
+                    checkState();
 
 
                 }
@@ -265,7 +281,7 @@ public class WildernessActivity extends AppCompatActivity
             itemName2.setText(inItem.getDescription());
             itemValue2.setText(Integer.toString(inItem.getValue()));
             itemMass2.setText(Double.toString(inItem.getMassorHealth()));
-            currItem2 = inItem;
+            currItem2 = (Equipment)inItem;
 
         }
 
@@ -275,6 +291,22 @@ public class WildernessActivity extends AppCompatActivity
     {
         builder.setMessage(message);
         builder.show();
+    }
+
+    private void checkState()
+    {
+        if(gameData.getWinCount() == 3)
+        {
+            showMessage("Congrats You Win!");
+            startActivity(new Intent(WildernessActivity.this,OpeningScreenActivity.class));
+            gameData.resetGame();
+        }
+        if(gameData.getPlayer().getHealth() <= 0)
+        {
+            showMessage("You Lose");
+            startActivity(new Intent(WildernessActivity.this,OpeningScreenActivity.class));
+            gameData.resetGame();
+        }
     }
 
 

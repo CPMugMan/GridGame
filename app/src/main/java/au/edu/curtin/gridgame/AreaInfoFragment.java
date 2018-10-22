@@ -20,28 +20,7 @@ public class AreaInfoFragment extends Fragment
     private EditText descriptionText;
     private Switch starSwitch;
     private GameData data;
-
-    private TextWatcher filterTextWatcher = new TextWatcher()
-    {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-        {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count)
-        {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s)
-        {
-            data.getCurrArea().setDescription(descriptionText.getText().toString());
-
-        }
-    };
+    private Area inArea;
 
     @Override
     public void onCreate(Bundle b)
@@ -58,14 +37,33 @@ public class AreaInfoFragment extends Fragment
         View view = inflater.inflate(R.layout.area_info_fragment, ui, false);
         areaType =(TextView)view.findViewById(R.id.areaType2);
         descriptionText =(EditText)view.findViewById(R.id.descriptionText2);
-        descriptionText.addTextChangedListener(filterTextWatcher);
         starSwitch =(Switch)view.findViewById(R.id.starredSwitch2);
         starSwitch.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                data.getCurrArea().setStarred(starSwitch.isChecked());
+                inArea.setStarred(starSwitch.isChecked());
+            }
+        });
+        descriptionText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                inArea.setDescription(descriptionText.getText().toString());
             }
         });
 
@@ -78,6 +76,8 @@ public class AreaInfoFragment extends Fragment
 
     public void updateUI()
     {
+        inArea = data.getCurrArea();
+
         if(data.getCurrArea().getTown() == false)
         {
             areaType.setText("Wilderness");
@@ -91,6 +91,25 @@ public class AreaInfoFragment extends Fragment
 
         starSwitch.setChecked(data.getCurrArea().getStarred());
 
+
+    }
+
+    public void updateArea(Area inArea)
+    {
+        this.inArea = inArea;
+
+        if(inArea.getTown() == false)
+        {
+            areaType.setText("Wilderness");
+        }
+        else
+        {
+            areaType.setText("Town");
+        }
+
+        descriptionText.setText(inArea.getDescription());
+
+        starSwitch.setChecked(inArea.getStarred());
 
     }
 }

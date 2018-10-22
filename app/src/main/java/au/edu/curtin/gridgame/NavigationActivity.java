@@ -39,6 +39,7 @@ public class NavigationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         gameData = GameData.get();
+        gameData.getCurrArea().setExplored(true);
 
         FragmentManager fm = getSupportFragmentManager();
         fragA = (AreaInfoFragment)fm.findFragmentById(R.id.af_container);
@@ -74,6 +75,7 @@ public class NavigationActivity extends AppCompatActivity
                 {
                     gameData.movePlayer(1,0);
                     updateUI();
+                    checkState();
 
                 }
             }
@@ -92,6 +94,7 @@ public class NavigationActivity extends AppCompatActivity
                 {
                     gameData.movePlayer(-1,0);
                     updateUI();
+                    checkState();
 
 
                 }
@@ -111,6 +114,7 @@ public class NavigationActivity extends AppCompatActivity
                 {
                     gameData.movePlayer(0,1);
                     updateUI();
+                    checkState();
 
                 }
 
@@ -130,6 +134,7 @@ public class NavigationActivity extends AppCompatActivity
                 {
                     gameData.movePlayer(0,-1);
                     updateUI();
+                    checkState();
                 }
             }
         });
@@ -151,6 +156,17 @@ public class NavigationActivity extends AppCompatActivity
                     startActivityForResult(intent,REQUEST_CODE_MARKET);
                 }
 
+
+            }
+        });
+
+        overviewButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(NavigationActivity.this,OverviewActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_OVERVIEW);
 
             }
         });
@@ -188,13 +204,37 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent returnData)
     {
-        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_WILDERNESS || requestCode == REQUEST_CODE_MARKET)
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_WILDERNESS || requestCode == REQUEST_CODE_MARKET || requestCode == REQUEST_CODE_OVERVIEW)
         {
             updateUI();
             fragB.updateUI();
             fragA.updateUI();
         }
 
+    }
+
+    private void checkState()
+    {
+        if(gameData.getWinCount() == 3)
+        {
+            showMessage("Congrats You Win!");
+            startActivity(new Intent(NavigationActivity.this,OpeningScreenActivity.class));
+            gameData.resetGame();
+
+        }
+        if(gameData.getPlayer().getHealth() <= 0)
+        {
+            showMessage("You Lose");
+            startActivity(new Intent(NavigationActivity.this,OpeningScreenActivity.class));
+            gameData.resetGame();
+
+        }
+    }
+
+    private void showMessage(String message)
+    {
+        builder.setMessage(message);
+        builder.show();
     }
 
 

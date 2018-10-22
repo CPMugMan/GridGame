@@ -5,13 +5,21 @@ import java.util.List;
 
 public class Area
 {
+    private final int grass;
+    private final int wilderness;
+    private final int townP;
+    private final int person;
+    private final int star;
+
     private boolean town;
     private List<Item> items;
     private String description;
     private boolean starred;
     private boolean explored;
+    private int x;
+    private int y;
 
-    public Area()
+    /*public Area()
     {
         town = false;
         items = new ArrayList<Item>();
@@ -19,15 +27,59 @@ public class Area
         starred = false;
         explored = false;
 
-    }
+    }*/
 
-    public Area(boolean inTown)
+    public Area(boolean inTown, int inGrass, int inWilderness, int inTownP, int inPerson, int inStar, int inX, int inY)
     {
         this.town = inTown;
+        this.grass = inGrass;
+        this.wilderness = inWilderness;
+        this.townP = inTownP;
+        this.person = inPerson;
+        this.star = inStar;
+
         items = new ArrayList<Item>();
-        description = "Empty";
+        description = "Insert Description Here";
         starred = false;
         explored = false;
+        x = inX;
+        y = inY;
+
+    }
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return  y;
+    }
+
+    public int getGrass()
+    {
+        return grass;
+    }
+
+    public int getWilderness()
+    {
+        return wilderness;
+    }
+
+    public int getTownP()
+    {
+        return townP;
+    }
+
+    public int getPerson()
+    {
+        return person;
+    }
+
+    public int getStar()
+    {
+        return star;
     }
 
     public void setTown(boolean inTown)

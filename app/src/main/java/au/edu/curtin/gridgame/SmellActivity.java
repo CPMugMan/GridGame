@@ -145,38 +145,10 @@ public class SmellActivity extends AppCompatActivity
 
                 }
 
-                //displayList.add(name + "   " + x + " " + northSouth + "   " + y + " " + eastWest);
 
             }
         }
     }
 
-    /*public void kappaCode()
-    {
-        Area currArea = gameData.getArea(i,j);
-        String eastWest;
-        String northSouth;
-        String x;
-        String y;
-        String name = currArea.getDescription();
-        if(i < gameData.getPlayer().getColLocation())
-        {
-            northSouth = "South";
-        }
-        else
-        {
-            northSouth = "North";
-        }
-        if(j < gameData.getPlayer().getRowLocation())
-        {
-            eastWest = "West";
-        }
-        else
-        {
-            eastWest = "East";
-        }
-        x = Integer.toString(Math.abs(i-gameData.getPlayer().getColLocation()));
-        y = Integer.toString(Math.abs(j-gameData.getPlayer().getRowLocation()));
-    }*/
 
 }
