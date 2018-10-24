@@ -1,35 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/CashValue"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Cash : 100 "
+        android:text="C : 100 "
         />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="" />
 
     <TextView
         android:id="@+id/HealthText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Health : 100 "
+        android:text="H : 100 "
         />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="" />
 
     <TextView
         android:id="@+id/EquipValue"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Equipment Mass : 100"
+        android:text="M : 100"
         />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="" />
 
     <Button
         android:id="@+id/RestartButton"
-        android:textSize="10dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Restart"
-        />
+        android:textSize="10dp" />
 
 </LinearLayout>

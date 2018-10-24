@@ -156,8 +156,8 @@ public class WildernessActivity extends AppCompatActivity
         public void bind(Item inItem)
         {
             itemName.setText(inItem.getDescription());
-            itemValue.setText(Integer.toString(inItem.getValue()));
-            itemMass.setText(Double.toString(inItem.getMassorHealth()));
+            itemValue.setText("V : " +Integer.toString(inItem.getValue()));
+            itemMass.setText("M/H : "+ Double.toString(inItem.getMassorHealth()));
             currItem = inItem;
 
         }
@@ -288,8 +288,8 @@ public class WildernessActivity extends AppCompatActivity
         public void bind(Item inItem)
         {
             itemName2.setText(inItem.getDescription());
-            itemValue2.setText(Integer.toString(inItem.getValue()));
-            itemMass2.setText(Double.toString(inItem.getMassorHealth()));
+            itemValue2.setText("V : " + Integer.toString(inItem.getValue()));
+            itemMass2.setText("M : " + Double.toString(inItem.getMassorHealth()));
             currItem2 = (Equipment)inItem;
 
         }
