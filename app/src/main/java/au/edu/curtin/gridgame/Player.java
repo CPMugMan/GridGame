@@ -1,26 +1,73 @@
 package au.edu.curtin.gridgame;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class Player
 {
     private int rowLocation;
     private int colLocation;
     private int cash;
+    private int winCount;
     private double health;
     private double equipmentMass;
-    private boolean town;
     private List<Equipment> equipmentList;
+    private String stringList;
+
+    private static final int id = 200;
 
     public Player()
     {
+        winCount = 0;
         rowLocation = 0;
         colLocation = 0;
         cash = 100;
         health = 100.0;
         equipmentMass = 0.0;
         equipmentList = new ArrayList<Equipment>();
+        stringList = "";
+    }
+
+    public Player(int inRow, int inCol, int inCash, double inHealth, double inMass,String inList, int inWinCount)
+    {
+        rowLocation = inRow;
+        colLocation = inCol;
+        cash = inCash;
+        health = inHealth;
+        equipmentMass = inMass;
+        stringList = inList;
+        equipmentList = new ArrayList<Equipment>();
+        inWinCount = winCount;
+
+
+
+    }
+
+    public void resetPlayer()
+    {
+        winCount = 0;
+        rowLocation = 0;
+        colLocation = 0;
+        cash = 100;
+        health = 100.0;
+        equipmentMass = 0.0;
+        equipmentList = new ArrayList<Equipment>();
+        stringList = "";
+
+    }
+
+    public void setWinCount(int inWin)
+    {
+        winCount = inWin;
+    }
+
+    public int getWinCount()
+    {
+        return winCount;
     }
 
     public void moveHealth()
@@ -43,6 +90,12 @@ public class Player
     {
         cash = inCash;
     }
+
+    public String getStringList()
+    {
+        return stringList;
+    }
+
 
     public void setList(List<Equipment> inEquipmentList)
     {
@@ -70,7 +123,25 @@ public class Player
     public void addEquipment(Equipment inEquipment)
     {
         equipmentList.add(inEquipment);
+        stringList = stringList + inEquipment.getDescription() + ":";
+        Log.d(TAG, "removeItem4 " + stringList);
+
     }
+
+    public void addEquipment2(Equipment inEquipment)
+    {
+        equipmentList.add(inEquipment);
+    }
+
+
+    public void removeEquipment(Equipment inEquipment)
+    {
+        String removed = inEquipment.getDescription() + ":";
+        stringList = stringList.replaceFirst(removed,"");
+        equipmentList.remove(inEquipment);
+        Log.d(TAG, "removeItem3: " + stringList);
+    }
+
 
     public int getRowLocation()
     {
@@ -90,6 +161,11 @@ public class Player
     public double getHealth()
     {
         return health;
+    }
+
+    public int getID()
+    {
+        return id;
     }
 
     public double getEquipmentMass()

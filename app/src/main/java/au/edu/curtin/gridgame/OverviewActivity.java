@@ -27,7 +27,7 @@ public class OverviewActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
-        data = GameData.get();
+        data = GameData.get(getApplicationContext());
         leave = (Button)findViewById(R.id.button);
         RecyclerView rc = (RecyclerView)findViewById(R.id.map);
         rc.setLayoutManager(new GridLayoutManager(this,GameData.X,GridLayoutManager.HORIZONTAL,false));

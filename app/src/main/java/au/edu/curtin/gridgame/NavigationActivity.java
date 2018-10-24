@@ -38,7 +38,10 @@ public class NavigationActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        gameData = GameData.get();
+        gameData = GameData.get(getApplicationContext());
+        gameData.createItems();
+        gameData.load();
+        gameData.load2();
         gameData.getCurrArea().setExplored(true);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -61,6 +64,8 @@ public class NavigationActivity extends AppCompatActivity
         builder.setCancelable(true);
 
         initialButton();
+        xCoord.setText(Integer.toString(gameData.getPlayer().getColLocation()));
+        yCoord.setText(Integer.toString(gameData.getPlayer().getRowLocation()));
 
         northButton.setOnClickListener(new View.OnClickListener()
         {
@@ -74,6 +79,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(1,0);
+                    gameData.updatePlayer();
                     updateUI();
                     checkState();
 
@@ -93,6 +99,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(-1,0);
+                    gameData.updatePlayer();
                     updateUI();
                     checkState();
 
@@ -113,6 +120,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(0,1);
+                    gameData.updatePlayer();
                     updateUI();
                     checkState();
 
@@ -133,6 +141,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(0,-1);
+                    gameData.updatePlayer();
                     updateUI();
                     checkState();
                 }
@@ -215,7 +224,7 @@ public class NavigationActivity extends AppCompatActivity
 
     private void checkState()
     {
-        if(gameData.getWinCount() == 3)
+        if(gameData.getPlayer().getWinCount() == 3)
         {
             showMessage("Congrats You Win!");
             startActivity(new Intent(NavigationActivity.this,OpeningScreenActivity.class));

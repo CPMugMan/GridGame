@@ -1,9 +1,21 @@
 package au.edu.curtin.gridgame;
 
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import au.edu.curtin.gridgame.GridGameSchema.PlayerTable;
+import au.edu.curtin.gridgame.GridGameSchema.AreaTable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static android.content.ContentValues.TAG;
 
 public class GameData
 {
@@ -13,44 +25,214 @@ public class GameData
 
     private Area[][] grid;
     private List<Item> itemList;
-    private int winCount;
     private Player player;
     private Random random;
     private List<Equipment> winningItemList;
+    private SQLiteDatabase db;
 
-    public GameData()
+    public GameData(Context context)
     {
-        this.winCount = 0;
+        this.db  = new GridGameDbHelper(context.getApplicationContext()
+        ).getWritableDatabase();
         this.grid = new Area[X][Y];
         this.itemList = new ArrayList<Item>();
         this.winningItemList = new ArrayList<Equipment>();
         this.random = new Random();
-        this.player = new Player();
-        createItems();
-        randomTheMap();
-        randomWinItems();
+        //this.player = new Player();
+        //randomTheMap();
+        //randomWinItems();
 
     }
 
     public void resetGame()
     {
-        this.winCount = 0;
         this.grid = new Area[X][Y];
         this.itemList = new ArrayList<Item>();
         this.winningItemList = new ArrayList<Equipment>();
         this.random = new Random();
-        this.player = new Player();
+        player.resetPlayer();
+        updatePlayer();
         createItems();
-        randomTheMap();
+        randomTheMap2();
         randomWinItems();
 
     }
 
-    public static GameData get()
+    public void load()
     {
+        GridGameCursor cursor = new GridGameCursor(
+                db.query(PlayerTable.NAME, // FROM our table
+                        null, // SELECT all columns
+                        null, // WHERE clause (null = all rows)
+                        null,
+                        null,
+                        null,
+                        null)
+        );
+        try
+        {
+            if(cursor.getCount() > 0)
+            {
+                cursor.moveToFirst();
+                player = cursor.getPlayer();
+                String[] parts = player.getStringList().split(":");
+                if(!parts[0].equals(""))
+                {
+                    for(int i = 0; i< parts.length;i++)
+                    {
+                        player.addEquipment2((Equipment)getItem(parts[i]));
+                    }
+
+                }
+            }
+            else
+            {
+                player = new Player();
+                addPlayer();
+            }
+
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+
+
+    }
+
+    public void load2()
+    {
+        GridGameCursor cursor = new GridGameCursor(
+                db.query(AreaTable.NAME, // FROM our table
+                        null, // SELECT all columns
+                        null, // WHERE clause (null = all rows)
+                        null,
+                        null,
+                        null,
+                        null)
+        );
+        try
+        {
+            if(cursor.getCount() > 0)
+            {
+                cursor.moveToFirst();
+                for(int i =0; i<=X-1;i++)
+                {
+                    for(int j =0;j<=Y-1;j++)
+                    {
+                        grid[i][j] = cursor.getArea();
+                        String[] parts = grid[i][j].getStringlist().split(":");
+                        if(!parts[0].equals(""))
+                        {
+                            for(int k = 0; k< parts.length;k++)
+                            {
+                                grid[i][j].addItem2(getItem2(parts[k]));
+                            }
+
+                        }
+                        cursor.moveToNext();
+                    }
+
+                }
+
+            }
+            else
+            {
+                randomTheMap();
+                randomWinItems();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+
+
+    }
+
+    public void addArea(Area inArea)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(AreaTable.Cols.ID,inArea.getId());
+        cv.put(AreaTable.Cols.TOWN,inArea.getTown());
+        cv.put(AreaTable.Cols.XCo,inArea.getX());
+        cv.put(AreaTable.Cols.YCo,inArea.getY());
+        cv.put(AreaTable.Cols.DESC,inArea.getDescription());
+        cv.put(AreaTable.Cols.STAR,inArea.getStarred());
+        cv.put(AreaTable.Cols.EXPLORED,inArea.getExplored());
+        cv.put(AreaTable.Cols.LIST2,inArea.getStringlist());
+        db.insert(AreaTable.NAME,null,cv);
+
+    }
+
+    public void updateArea(Area inArea)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(AreaTable.Cols.ID,inArea.getId());
+        cv.put(AreaTable.Cols.TOWN,inArea.getTown());
+        cv.put(AreaTable.Cols.XCo,inArea.getX());
+        cv.put(AreaTable.Cols.YCo,inArea.getY());
+        cv.put(AreaTable.Cols.DESC,inArea.getDescription());
+        cv.put(AreaTable.Cols.STAR,inArea.getStarred());
+        cv.put(AreaTable.Cols.EXPLORED,inArea.getExplored());
+        cv.put(AreaTable.Cols.LIST2,inArea.getStringlist());
+        String[] whereValue = {};
+        db.update(AreaTable.NAME, cv, AreaTable.Cols.ID + " = " + inArea.getId(), whereValue);
+
+    }
+
+    public void removeArea(Area inArea)
+    {
+        String[] whereValue = {};
+        db.delete(AreaTable.NAME,  AreaTable.Cols.ID + " = " + inArea.getId(), whereValue);
+
+    }
+
+    public void addPlayer()
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(PlayerTable.Cols.ID, player.getID());
+        cv.put(PlayerTable.Cols.ROW,player.getRowLocation());
+        cv.put(PlayerTable.Cols.COL,player.getColLocation());
+        cv.put(PlayerTable.Cols.CASH,player.getCash());
+        cv.put(PlayerTable.Cols.HEALTH,player.getHealth());
+        cv.put(PlayerTable.Cols.MASS,player.getEquipmentMass());
+        cv.put(PlayerTable.Cols.LIST,player.getStringList());
+        db.insert(PlayerTable.NAME,null,cv);
+
+    }
+
+    public void updatePlayer()
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(PlayerTable.Cols.ID, getPlayer().getID());
+        cv.put(PlayerTable.Cols.ROW,getPlayer().getRowLocation());
+        cv.put(PlayerTable.Cols.COL,getPlayer().getColLocation());
+        cv.put(PlayerTable.Cols.CASH,getPlayer().getCash());
+        cv.put(PlayerTable.Cols.HEALTH,getPlayer().getHealth());
+        cv.put(PlayerTable.Cols.MASS,getPlayer().getEquipmentMass());
+        cv.put(PlayerTable.Cols.LIST,getPlayer().getStringList());
+        String[] whereValue = {};
+        db.update(PlayerTable.NAME, cv, PlayerTable.Cols.ID + " = " + player.getID(), whereValue);
+
+    }
+
+    public void removePlayer()
+    {
+        String[] whereValue = { String.valueOf(player.getID()) };
+        db.delete(PlayerTable.NAME,
+                PlayerTable.Cols.ID + " = " + player.getID(), whereValue);
+
+    }
+
+    public static GameData get(Context context)
+    {
+
         if(instance == null)
         {
-            instance = new GameData();
+            instance = new GameData(context);
         }
         return instance;
     }
@@ -151,11 +333,12 @@ public class GameData
         {
             for(int j =0;j<=Y-1;j++)
             {
-                grid[i][j] = new Area(random.nextBoolean(),R.drawable.ic_grass3,R.drawable.ic_tree3,R.drawable.ic_building1,R.drawable.ic_person,R.drawable.ic_star,i,j);
+                grid[i][j] = new Area(random.nextBoolean(),i,j);
                 for(int k = 0; k <=random.nextInt(16); k++) //Only allows a max of 15 items per area
                 {
                     grid[i][j].addItem(itemList.get(random.nextInt(13)));
                 }
+                addArea(grid[i][j]);
 
             }
         }
@@ -168,6 +351,7 @@ public class GameData
             int x = random.nextInt(X-1);
             int y = random.nextInt(Y-1);
             grid[x][y].addItem(winningItemList.get(i));
+            updateArea(grid[x][y]);
         }
 
     }
@@ -175,7 +359,8 @@ public class GameData
     public void boughtWinningItem(Equipment inEquipment)
     {
         winningItemList.remove(inEquipment);
-        winCount++;
+        player.setWinCount(player.getWinCount()+ 1);
+        updatePlayer();
 
     }
 
@@ -187,13 +372,42 @@ public class GameData
 
     public void improbDrive()
     {
-        randomTheMap();
+        randomTheMap2();
         randomWinItems();
     }
 
-    public int getWinCount()
+
+    public Item getItem(String name)
     {
-        return winCount;
+        Item returnItem = null;
+        for(int i =0; i<itemList.size();i++)
+        {
+            if(itemList.get(i).getDescription().equals(name))
+            {
+                returnItem = itemList.get(i);
+            }
+        }
+        return returnItem;
+    }
+
+    public Item getItem2(String name)
+    {
+        Item returnItem = null;
+        for(int i =0; i<itemList.size();i++)
+        {
+            if(itemList.get(i).getDescription().equals(name))
+            {
+                returnItem = itemList.get(i);
+            }
+        }
+        for(int j=0; j<winningItemList.size();j++)
+        {
+            if(winningItemList.get(j).getDescription().equals(name))
+            {
+                returnItem = winningItemList.get(j);
+            }
+        }
+        return returnItem;
     }
 
     public void benKen()
@@ -215,12 +429,33 @@ public class GameData
         }
         for(int i =0; i< addList.size();i++)
         {
-            getPlayer().getList().add(addList.get(i));
+            getPlayer().addEquipment(addList.get(i));
 
         }
         getCurrArea().getList().clear();
+        getCurrArea().setStringlist("");
 
     }
+
+    public void randomTheMap2()
+    {
+        for(int i =0; i<=X-1;i++)
+        {
+            for(int j =0;j<=Y-1;j++)
+            {
+                grid[i][j] = new Area(random.nextBoolean(),i,j);
+                for(int k = 0; k <=random.nextInt(16); k++) //Only allows a max of 15 items per area
+                {
+                    grid[i][j].addItem(itemList.get(random.nextInt(13)));
+                }
+                updateArea(grid[i][j]);
+
+            }
+        }
+
+    }
+
+
 
 
 

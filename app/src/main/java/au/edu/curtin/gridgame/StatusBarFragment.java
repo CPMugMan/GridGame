@@ -1,5 +1,6 @@
 package au.edu.curtin.gridgame;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ public class StatusBarFragment extends Fragment
     public void onCreate(Bundle b)
     {
         super.onCreate(b);
-        data = GameData.get();
+        data = GameData.get(getContext());
 
 
     }
@@ -39,6 +40,8 @@ public class StatusBarFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                startActivity(new Intent(getContext(),OpeningScreenActivity.class));
+                data.resetGame();
 
             }
         });

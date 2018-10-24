@@ -1,6 +1,7 @@
 package au.edu.curtin.gridgame;
 
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MarketActivity extends AppCompatActivity
 {
@@ -33,7 +37,7 @@ public class MarketActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
-        gameData = GameData.get();
+        gameData = GameData.get(getApplicationContext());
         leaveButton = (Button)findViewById(R.id.leaveButton);
 
         builder = new AlertDialog.Builder(MarketActivity.this);
@@ -147,11 +151,13 @@ public class MarketActivity extends AppCompatActivity
                             }
                         }
                         gameData.getPlayer().setCash(gameData.getPlayer().getCash() - currItem.getValue());
-                        gameData.getCurrArea().getList().remove(currItem);
+                        gameData.getCurrArea().removeItem2(currItem);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
                         checkState();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
 
                     }
                 }
@@ -228,11 +234,13 @@ public class MarketActivity extends AppCompatActivity
                     {
                         gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() - currItem2.getMassorHealth());
                         gameData.getPlayer().setCash(gameData.getPlayer().getCash() + (int)((double)currItem2.getValue()*0.75));
-                        gameData.getCurrArea().getList().add(currItem2);
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getCurrArea().addItem(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
 
                     }
 
@@ -246,14 +254,17 @@ public class MarketActivity extends AppCompatActivity
                 {
                     if(currItem2.getDescription().equals("Portable Smell-O-Scope"))
                     {
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         Intent intent = new Intent(MarketActivity.this,SmellActivity.class);
                         startActivityForResult(intent,REQUEST_CODE_SMELLY);
                         showMessage("Smell-O-Scope Used");
+                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
+
                     }
                     else if(currItem2.getDescription().equals("Improbability Drive"))
                     {
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         gameData.improbDrive();
                         showMessage("Improbability Drive Used");
                         Intent intent = new Intent();
@@ -264,12 +275,14 @@ public class MarketActivity extends AppCompatActivity
                     }
                     else if(currItem2.getDescription().equals("Ben Kenobi"))
                     {
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         showMessage("Ben Kenobi Used");
                         gameData.benKen();
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
 
                     }
                     else
@@ -277,6 +290,7 @@ public class MarketActivity extends AppCompatActivity
                         showMessage("Cannot use that Item");
                     }
                     checkState();
+
                 }
             });
 
@@ -301,7 +315,7 @@ public class MarketActivity extends AppCompatActivity
 
     private void checkState()
     {
-        if(gameData.getWinCount() == 3)
+        if(gameData.getPlayer().getWinCount() == 3)
         {
             showMessage("Congrats You Win!");
             startActivity(new Intent(MarketActivity.this,OpeningScreenActivity.class));

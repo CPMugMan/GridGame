@@ -32,7 +32,7 @@ public class WildernessActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wilderness);
-        gameData = GameData.get();
+        gameData = GameData.get(getApplicationContext());
         leaveButton = (Button)findViewById(R.id.leaveButton);
 
         builder = new AlertDialog.Builder(WildernessActivity.this);
@@ -140,10 +140,12 @@ public class WildernessActivity extends AppCompatActivity
                                 gameData.boughtWinningItem((Equipment)currItem );
                             }
                         }
-                        gameData.getCurrArea().getList().remove(currItem);
+                        gameData.getCurrArea().removeItem2(currItem);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
                         checkState();
 
 
@@ -221,11 +223,13 @@ public class WildernessActivity extends AppCompatActivity
                     else
                     {
                         gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() - currItem2.getMassorHealth());
-                        gameData.getCurrArea().getList().add(currItem2);
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getCurrArea().addItem(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
                     }
 
                 }
@@ -241,11 +245,14 @@ public class WildernessActivity extends AppCompatActivity
                         Intent intent = new Intent(WildernessActivity.this,SmellActivity.class);
                         startActivityForResult(intent,REQUEST_CODE_SMELLY);
                         showMessage("Smell-O-Scope Used");
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
+                        adapter.notifyDataSetChanged();
+                        adapter1.notifyDataSetChanged();
+
                     }
                     else if(currItem2.getDescription().equals("Improbability Drive"))
                     {
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         gameData.improbDrive();
                         showMessage("Improbability Drive Used");
                         Intent intent = new Intent();
@@ -256,12 +263,14 @@ public class WildernessActivity extends AppCompatActivity
                     }
                     else if(currItem2.getDescription().equals("Ben Kenobi"))
                     {
-                        gameData.getPlayer().getList().remove(currItem2);
+                        gameData.getPlayer().removeEquipment(currItem2);
                         showMessage("Ben Kenobi Used");
                         gameData.benKen();
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
+                        gameData.updatePlayer();
+                        gameData.updateArea(gameData.getCurrArea());
 
                     }
                     else
@@ -295,7 +304,7 @@ public class WildernessActivity extends AppCompatActivity
 
     private void checkState()
     {
-        if(gameData.getWinCount() == 3)
+        if(gameData.getPlayer().getWinCount() == 3)
         {
             showMessage("Congrats You Win!");
             startActivity(new Intent(WildernessActivity.this,OpeningScreenActivity.class));

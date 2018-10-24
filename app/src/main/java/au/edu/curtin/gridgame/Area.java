@@ -1,15 +1,19 @@
 package au.edu.curtin.gridgame;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class Area
 {
-    private final int grass;
-    private final int wilderness;
-    private final int townP;
-    private final int person;
-    private final int star;
+    private int grass;
+    private int wilderness;
+    private int townP;
+    private int person;
+    private int star;
 
     private boolean town;
     private List<Item> items;
@@ -18,6 +22,9 @@ public class Area
     private boolean explored;
     private int x;
     private int y;
+    private String stringlist;
+    private static int nextId = 0;
+    private final int id;
 
     /*public Area()
     {
@@ -29,14 +36,16 @@ public class Area
 
     }*/
 
-    public Area(boolean inTown, int inGrass, int inWilderness, int inTownP, int inPerson, int inStar, int inX, int inY)
+    public Area(boolean inTown,int inX, int inY)
     {
+        this.id = nextId;
+        nextId++;
         this.town = inTown;
-        this.grass = inGrass;
-        this.wilderness = inWilderness;
-        this.townP = inTownP;
-        this.person = inPerson;
-        this.star = inStar;
+        this.grass = R.drawable.ic_grass3;
+        this.wilderness = R.drawable.ic_tree3;
+        this.townP = R.drawable.ic_building1;
+        this.person = R.drawable.ic_person;
+        this.star = R.drawable.ic_star;
 
         items = new ArrayList<Item>();
         description = "Insert Description Here";
@@ -44,8 +53,31 @@ public class Area
         explored = false;
         x = inX;
         y = inY;
+        stringlist = "";
 
     }
+
+    public Area(int id, boolean inTown, int inX, int inY, String inDescription, boolean inStarred, boolean inExpored, String inStringlist)
+    {
+        this.town = inTown;
+        this.grass = R.drawable.ic_grass3;
+        this.wilderness = R.drawable.ic_tree3;
+        this.townP = R.drawable.ic_building1;
+        this.person = R.drawable.ic_person;
+        this.star = R.drawable.ic_star;
+        this.id = id;
+        nextId = id + 1;
+        items = new ArrayList<Item>();
+        town = inTown;
+        x = inX;
+        y = inY;
+        description = inDescription;
+        starred = inStarred;
+        explored = inExpored;
+        stringlist = inStringlist;
+
+    }
+
 
     public int getX()
     {
@@ -90,11 +122,27 @@ public class Area
     public void addItem(Item inItem)
     {
         items.add(inItem);
+        stringlist = stringlist + inItem.getDescription() + ":";
+    }
+
+    public void addItem2(Item inItem)
+    {
+        items.add(inItem);
     }
 
     public void removeItem(int inIndex)
     {
+
         items.remove(inIndex);
+    }
+
+    public void removeItem2(Item inItem)
+    {
+
+        String removed = inItem.getDescription() + ":";
+        stringlist = stringlist.replaceFirst(removed,"");
+        items.remove(inItem);
+        Log.d(TAG, "removeItem2: " + stringlist);
     }
 
     public boolean getTown()
@@ -145,6 +193,21 @@ public class Area
     public boolean getExplored()
     {
         return explored;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public String getStringlist()
+    {
+        return stringlist;
+    }
+
+    public void setStringlist(String inString)
+    {
+        stringlist = inString;
     }
 
 

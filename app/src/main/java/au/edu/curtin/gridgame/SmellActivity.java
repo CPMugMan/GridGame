@@ -26,7 +26,7 @@ public class SmellActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_smell);
-        gameData = GameData.get();
+        gameData = GameData.get(getApplicationContext());
         displayList = new ArrayList<String>();
         smellOScope();
         leaveButton = (Button)findViewById(R.id.leaveButton);
@@ -107,12 +107,12 @@ public class SmellActivity extends AppCompatActivity
 
         minCol = Math.max(gameData.getPlayer().getColLocation()-2,0);
         minRow = Math.max(gameData.getPlayer().getRowLocation()-2,0);
-        maxCol = Math.min(gameData.getPlayer().getColLocation()+2,49);
-        maxRow = Math.min(gameData.getPlayer().getRowLocation()+2,49);
+        maxCol = Math.min(gameData.getPlayer().getColLocation()+2,gameData.X-1);
+        maxRow = Math.min(gameData.getPlayer().getRowLocation()+2,gameData.Y-1);
 
         for(int i = minCol; i<= maxCol; i++)
         {
-            for(int j= minRow; j<=maxRow;j++)
+            for(int j= minRow; j<= maxRow;j++)
             {
                 Area currA = gameData.getArea(i,j);
                 String eastWest;

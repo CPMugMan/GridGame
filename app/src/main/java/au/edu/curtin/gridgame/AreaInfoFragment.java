@@ -26,7 +26,7 @@ public class AreaInfoFragment extends Fragment
     public void onCreate(Bundle b)
     {
         super.onCreate(b);
-        data = GameData.get();
+        data = GameData.get(getContext());
 
 
     }
@@ -44,6 +44,7 @@ public class AreaInfoFragment extends Fragment
             public void onClick(View v)
             {
                 inArea.setStarred(starSwitch.isChecked());
+                data.updateArea(inArea);
             }
         });
         descriptionText.addTextChangedListener(new TextWatcher()
@@ -64,6 +65,7 @@ public class AreaInfoFragment extends Fragment
             public void afterTextChanged(Editable s)
             {
                 inArea.setDescription(descriptionText.getText().toString());
+                data.updateArea(inArea);
             }
         });
 
