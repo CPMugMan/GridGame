@@ -14,6 +14,7 @@ public class Area
     private int townP;
     private int person;
     private int star;
+    private int exploredP;
 
     private boolean town;
     private List<Item> items;
@@ -26,15 +27,6 @@ public class Area
     private static int nextId = 0;
     private final int id;
 
-    /*public Area()
-    {
-        town = false;
-        items = new ArrayList<Item>();
-        description = "Empty";
-        starred = false;
-        explored = false;
-
-    }*/
 
     public Area(boolean inTown,int inX, int inY)
     {
@@ -46,6 +38,7 @@ public class Area
         this.townP = R.drawable.ic_building1;
         this.person = R.drawable.ic_person;
         this.star = R.drawable.ic_star;
+        this.exploredP = R.drawable.ic_explored;
 
         items = new ArrayList<Item>();
         description = "Insert Description Here";
@@ -65,6 +58,7 @@ public class Area
         this.townP = R.drawable.ic_building1;
         this.person = R.drawable.ic_person;
         this.star = R.drawable.ic_star;
+        this.exploredP = R.drawable.ic_explored;
         this.id = id;
         nextId = id + 1;
         items = new ArrayList<Item>();
@@ -76,6 +70,11 @@ public class Area
         explored = inExpored;
         stringlist = inStringlist;
 
+    }
+
+    public int getExploredP()
+    {
+        return exploredP;
     }
 
 

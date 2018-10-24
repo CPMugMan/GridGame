@@ -79,6 +79,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(1,0);
+                    gameData.getCurrArea().setExplored(true);
                     gameData.updatePlayer();
                     updateUI();
                     checkState();
@@ -99,6 +100,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(-1,0);
+                    gameData.getCurrArea().setExplored(true);
                     gameData.updatePlayer();
                     updateUI();
                     checkState();
@@ -120,6 +122,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(0,1);
+                    gameData.getCurrArea().setExplored(true);
                     gameData.updatePlayer();
                     updateUI();
                     checkState();
@@ -141,6 +144,7 @@ public class NavigationActivity extends AppCompatActivity
                 else
                 {
                     gameData.movePlayer(0,-1);
+                    gameData.getCurrArea().setExplored(true);
                     gameData.updatePlayer();
                     updateUI();
                     checkState();

@@ -14,8 +14,9 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_person" />
-                            <entry key="sourceFile" value="C:\Users\Minh Nhat Dao\Downloads\baseline-face-24px.svg" />
+                            <entry key="opacityPercent" value="54" />
+                            <entry key="outputName" value="ic_explored" />
+                            <entry key="sourceFile" value="C:\Users\Minh Nhat Dao\Downloads\baseline-help-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

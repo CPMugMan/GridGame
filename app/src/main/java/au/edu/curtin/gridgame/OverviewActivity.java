@@ -94,6 +94,7 @@ public class OverviewActivity extends AppCompatActivity
         private ImageView town;
         private ImageView person;
         private ImageView star;
+        private ImageView explored;
         private Area area;
 
         public MyDataVHolder(LayoutInflater li, ViewGroup parent)
@@ -109,6 +110,7 @@ public class OverviewActivity extends AppCompatActivity
             town = (ImageView)itemView.findViewById(R.id.town);
             person = (ImageView)itemView.findViewById(R.id.person);
             star = (ImageView)itemView.findViewById(R.id.starred);
+            explored = (ImageView)itemView.findViewById(R.id.explored);
 
             grass.setOnClickListener(new View.OnClickListener()
             {
@@ -156,6 +158,14 @@ public class OverviewActivity extends AppCompatActivity
             else
             {
                 star.setImageResource(0);
+            }
+            if(inArea.getExplored() == false)
+            {
+                explored.setImageResource(inArea.getExploredP());
+            }
+            else
+            {
+                explored.setImageResource(0);
             }
             this.area = inArea;
 

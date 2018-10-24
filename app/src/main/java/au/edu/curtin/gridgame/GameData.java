@@ -290,10 +290,10 @@ public class GameData
         Equipment equipment1 = new Equipment("(づ￣ ³￣)づ",10,10.0,false);
         Equipment equipment2 = new Equipment("iPhone",15,4.0,false);
         Equipment equipment3 = new Equipment("Dell XPS 15",40,2.0,false);
-        Equipment equipment4 = new Equipment("Macbook Pro",70,1.0,false);
+        Equipment equipment4 = new Equipment("Macbook Pro",40,1.0,false);
         Equipment equipment5 = new Equipment("Chromebook",30,5.0,false);
         Equipment equipment6 = new Equipment("Portable Smell-O-Scope",40,5.0,false);
-        Equipment equipment7 = new Equipment("Improbability Drive",30,10,false);
+        Equipment equipment7 = new Equipment("Improbability Drive",30,-3.14,false);
         Equipment equipment8 = new Equipment("Ben Kenobi",30,0.0,false);
 
         Food food1 = new Food("Big Mac",7,30.0);
