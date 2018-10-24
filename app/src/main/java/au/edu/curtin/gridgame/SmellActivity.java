@@ -105,6 +105,8 @@ public class SmellActivity extends AppCompatActivity
         int maxRow;
         String name;
 
+
+        //Obtaining lower left coordinates and upper right coordinates for smelloscope area
         minCol = Math.max(gameData.getPlayer().getColLocation()-2,0);
         minRow = Math.max(gameData.getPlayer().getRowLocation()-2,0);
         maxCol = Math.min(gameData.getPlayer().getColLocation()+2,gameData.X-1);

@@ -47,7 +47,7 @@ public class AreaInfoFragment extends Fragment
                 data.updateArea(inArea);
             }
         });
-        descriptionText.addTextChangedListener(new TextWatcher()
+        descriptionText.addTextChangedListener(new TextWatcher() //Used to update the Description field after user enters in a description in edittext
         {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -66,6 +66,7 @@ public class AreaInfoFragment extends Fragment
             {
                 inArea.setDescription(descriptionText.getText().toString());
                 data.updateArea(inArea);
+
             }
         });
 
@@ -76,6 +77,7 @@ public class AreaInfoFragment extends Fragment
 
     }
 
+    //Updates AreaInfo Fragment inside the Navigation Activity
     public void updateUI()
     {
         inArea = data.getCurrArea();
@@ -96,6 +98,8 @@ public class AreaInfoFragment extends Fragment
 
     }
 
+
+    //Updates AreaInfo Fragment inside Overview Activity: Area passed in is the area that user taps on in the Overview Activity
     public void updateArea(Area inArea)
     {
         this.inArea = inArea;

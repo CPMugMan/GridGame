@@ -17,6 +17,7 @@ import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
+
 public class GameData
 {
     public static final int X = 5;
@@ -24,10 +25,10 @@ public class GameData
     private static GameData instance = null;
 
     private Area[][] grid;
-    private List<Item> itemList;
+    private List<Item> itemList; //List of winning items
     private Player player;
     private Random random;
-    private List<Equipment> winningItemList;
+    private List<Equipment> winningItemList; //List of 3 winning items
     private SQLiteDatabase db;
 
     public GameData(Context context)
@@ -38,26 +39,28 @@ public class GameData
         this.itemList = new ArrayList<Item>();
         this.winningItemList = new ArrayList<Equipment>();
         this.random = new Random();
-        //this.player = new Player();
-        //randomTheMap();
-        //randomWinItems();
 
     }
 
+    //Called when you win/lose or user presses restart: Resets player to default values and randomises the map again
     public void resetGame()
     {
+        db.delete(AreaTable.NAME, null, null);
+        db.delete(PlayerTable.NAME,null,null);
         this.grid = new Area[X][Y];
         this.itemList = new ArrayList<Item>();
         this.winningItemList = new ArrayList<Equipment>();
         this.random = new Random();
-        player.resetPlayer();
+        player = new Player();
+        addPlayer();
         updatePlayer();
         createItems();
-        randomTheMap2();
+        randomTheMap();
         randomWinItems();
 
     }
 
+    //Load Player
     public void load()
     {
         GridGameCursor cursor = new GridGameCursor(
@@ -71,11 +74,11 @@ public class GameData
         );
         try
         {
-            if(cursor.getCount() > 0)
+            if(cursor.getCount() > 0)  //Checks if there is an existing person in the database
             {
                 cursor.moveToFirst();
                 player = cursor.getPlayer();
-                String[] parts = player.getStringList().split(":");
+                String[] parts = player.getStringList().split(":"); //Does a String split on the players StringList to get the names of the all the items the player should have
                 if(!parts[0].equals(""))
                 {
                     for(int i = 0; i< parts.length;i++)
@@ -91,6 +94,7 @@ public class GameData
                 addPlayer();
             }
 
+
         }
         finally
         {
@@ -101,6 +105,7 @@ public class GameData
 
     }
 
+    //Load Areas
     public void load2()
     {
         GridGameCursor cursor = new GridGameCursor(
@@ -114,7 +119,7 @@ public class GameData
         );
         try
         {
-            if(cursor.getCount() > 0)
+            if(cursor.getCount() > 0) //Checks to see if there are existing areas in the database
             {
                 cursor.moveToFirst();
                 for(int i =0; i<=X-1;i++)
@@ -122,7 +127,7 @@ public class GameData
                     for(int j =0;j<=Y-1;j++)
                     {
                         grid[i][j] = cursor.getArea();
-                        String[] parts = grid[i][j].getStringlist().split(":");
+                        String[] parts = grid[i][j].getStringlist().split(":"); //Does a string split on areas string list to get the names of all items that area should have
                         if(!parts[0].equals(""))
                         {
                             for(int k = 0; k< parts.length;k++)
@@ -237,7 +242,7 @@ public class GameData
         return instance;
     }
 
-    public boolean positionCheck(int xCheck, int yCheck)
+    public boolean positionCheck(int xCheck, int yCheck) //Checks to see if player will be out of bounds after they move
     {
         int xCheck2 = player.getColLocation() + xCheck;
         int yCheck2 = player.getRowLocation() + yCheck;
@@ -326,7 +331,7 @@ public class GameData
 
     }
 
-    public void randomTheMap()
+    public void randomTheMap() //Called when there are no areas in database, randomises the map
     {
 
         for(int i =0; i<=X-1;i++)
@@ -344,7 +349,7 @@ public class GameData
         }
     }
 
-    public void randomWinItems()
+    public void randomWinItems() //randomises where the winning items will go
     {
         for(int i = 0; i < winningItemList.size();i++)
         {
@@ -356,7 +361,7 @@ public class GameData
 
     }
 
-    public void boughtWinningItem(Equipment inEquipment)
+    public void boughtWinningItem(Equipment inEquipment) //called when player has bought a winning item
     {
         winningItemList.remove(inEquipment);
         player.setWinCount(player.getWinCount()+ 1);
@@ -372,12 +377,13 @@ public class GameData
 
     public void improbDrive()
     {
-        randomTheMap2();
+        db.delete(AreaTable.NAME, null, null);
+        randomTheMap();
         randomWinItems();
     }
 
 
-    public Item getItem(String name)
+    public Item getItem(String name) //Returns the items with the same name as the String passed in
     {
         Item returnItem = null;
         for(int i =0; i<itemList.size();i++)
@@ -390,7 +396,7 @@ public class GameData
         return returnItem;
     }
 
-    public Item getItem2(String name)
+    public Item getItem2(String name) //Same as getItem but checks winning items as well
     {
         Item returnItem = null;
         for(int i =0; i<itemList.size();i++)
@@ -436,28 +442,6 @@ public class GameData
         getCurrArea().setStringlist("");
 
     }
-
-    public void randomTheMap2()
-    {
-        for(int i =0; i<=X-1;i++)
-        {
-            for(int j =0;j<=Y-1;j++)
-            {
-                grid[i][j] = new Area(random.nextBoolean(),i,j);
-                for(int k = 0; k <=random.nextInt(16); k++) //Only allows a max of 15 items per area
-                {
-                    grid[i][j].addItem(itemList.get(random.nextInt(13)));
-                }
-                updateArea(grid[i][j]);
-
-            }
-        }
-
-    }
-
-
-
-
 
 
 

@@ -29,7 +29,7 @@ public class Player
         health = 100.0;
         equipmentMass = 0.0;
         equipmentList = new ArrayList<Equipment>();
-        stringList = "";
+        stringList = ""; //String of the names of all items player currently has separated by :
     }
 
     public Player(int inRow, int inCol, int inCash, double inHealth, double inMass,String inList, int inWinCount)
@@ -177,4 +177,5 @@ public class Player
     {
         return equipmentList;
     }
+
 }

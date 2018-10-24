@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 public class StatusBarFragment extends Fragment
 {
     private TextView cash;
@@ -54,8 +56,8 @@ public class StatusBarFragment extends Fragment
     public void updateUI()
     {
         cash.setText("C :" +(Integer.toString(data.getPlayer().getCash())));
-        health.setText("H : " +(Double.toString(data.getPlayer().getHealth())) );
-        equipmentMass.setText("M : " +(Double.toString(data.getPlayer().getEquipmentMass())));
+        health.setText("H : " +(new DecimalFormat("#.##").format(data.getPlayer().getHealth())));
+        equipmentMass.setText("M : " +( new DecimalFormat("#.##").format(data.getPlayer().getEquipmentMass())));
     }
 
 

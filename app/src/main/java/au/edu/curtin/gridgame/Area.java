@@ -23,7 +23,7 @@ public class Area
     private boolean explored;
     private int x;
     private int y;
-    private String stringlist;
+    private String stringlist; //String of all items in Area seperated by :, used by load to know what items to add upon startup
     private static int nextId = 0;
     private final int id;
 
@@ -141,7 +141,6 @@ public class Area
         String removed = inItem.getDescription() + ":";
         stringlist = stringlist.replaceFirst(removed,"");
         items.remove(inItem);
-        Log.d(TAG, "removeItem2: " + stringlist);
     }
 
     public boolean getTown()
