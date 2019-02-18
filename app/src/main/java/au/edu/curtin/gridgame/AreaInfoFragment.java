@@ -104,7 +104,11 @@ public class AreaInfoFragment extends Fragment
     {
         this.inArea = inArea;
 
-        if(inArea.getTown() == false)
+        if(!inArea.getExplored())
+        {
+            areaType.setText("Unexplored");
+        }
+        else if(inArea.getTown() == false)
         {
             areaType.setText("Wilderness");
         }

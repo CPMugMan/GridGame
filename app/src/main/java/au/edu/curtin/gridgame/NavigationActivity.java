@@ -72,7 +72,7 @@ public class NavigationActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if(gameData.positionCheck(1,0) == false)
+                if(!gameData.positionCheck(1, 0))
                 {
                     cantMove();
                 }

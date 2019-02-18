@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NavigationActivity2"></activity>
         <activity android:name=".OpeningScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SmellOScopeActivity" />
         <activity android:name=".SmellActivity" />
-        <activity android:name=".OverviewActivity"></activity>
+        <activity android:name=".OverviewActivity" />
     </application>
 
 </manifest>

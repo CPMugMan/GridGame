@@ -32,6 +32,8 @@ public class Equipment extends Item
         winningItem = inWin;
     }
 
+
+
     public boolean isWinningItem()
     {
         return winningItem;
