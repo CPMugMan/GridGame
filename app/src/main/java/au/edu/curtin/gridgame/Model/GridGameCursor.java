@@ -1,9 +1,9 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.Model;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import au.edu.curtin.gridgame.GridGameSchema.PlayerTable;
-import au.edu.curtin.gridgame.GridGameSchema.AreaTable;
+import au.edu.curtin.gridgame.Model.GridGameSchema.PlayerTable;
+import au.edu.curtin.gridgame.Model.GridGameSchema.AreaTable;
 
 public class GridGameCursor extends CursorWrapper
 {

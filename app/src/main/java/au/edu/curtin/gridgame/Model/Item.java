@@ -1,4 +1,4 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.Model;
 
 public abstract class Item
 {

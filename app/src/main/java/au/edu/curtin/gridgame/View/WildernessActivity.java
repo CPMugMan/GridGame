@@ -1,16 +1,12 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.View;
 
 import android.content.Intent;
-import android.database.DatabaseUtils;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +15,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import au.edu.curtin.gridgame.Controller.GameData;
+import au.edu.curtin.gridgame.Model.Equipment;
+import au.edu.curtin.gridgame.Model.Item;
+import au.edu.curtin.gridgame.R;
 
-public class MarketActivity extends AppCompatActivity
+public class WildernessActivity extends AppCompatActivity
 {
     private GameData gameData;
     private StatusBarFragment fragA;
@@ -31,16 +30,15 @@ public class MarketActivity extends AppCompatActivity
     private PlayerAdapter adapter1;
     private static final int REQUEST_CODE_SMELLY = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_market);
+        setContentView(R.layout.activity_wilderness);
         gameData = GameData.get(getApplicationContext());
         leaveButton = (Button)findViewById(R.id.leaveButton);
 
-        builder = new AlertDialog.Builder(MarketActivity.this);
+        builder = new AlertDialog.Builder(WildernessActivity.this);
         builder.setCancelable(true);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -98,7 +96,7 @@ public class MarketActivity extends AppCompatActivity
         @Override
         public MarketVHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
-            LayoutInflater li = LayoutInflater.from(MarketActivity.this);
+            LayoutInflater li = LayoutInflater.from(WildernessActivity.this);
             return new MarketVHolder(li,parent);
         }
 
@@ -126,18 +124,13 @@ public class MarketActivity extends AppCompatActivity
             itemValue = (TextView)itemView.findViewById(R.id.value);
             itemMass = (TextView)itemView.findViewById(R.id.mass);
             buy = (Button)itemView.findViewById(R.id.buy);
+            buy.setText("Pickup");
             buy.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    if(currItem.getValue() > gameData.getPlayer().getCash())
-                    {
-                        showMessage("Cannot Afford");
-                    }
-                    else
-                    {
-                        if(currItem.getType().equals("Health"))
+                      if(currItem.getType().equals("Health"))
                         {
                             gameData.getPlayer().setHealth(gameData.getPlayer().getHealth() + currItem.getMassorHealth());
                         }
@@ -150,16 +143,15 @@ public class MarketActivity extends AppCompatActivity
                                 gameData.boughtWinningItem((Equipment)currItem );
                             }
                         }
-                        gameData.getPlayer().setCash(gameData.getPlayer().getCash() - currItem.getValue());
                         gameData.getCurrArea().removeItem2(currItem);
                         fragA.updateUI();
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
-                        checkState();
                         gameData.updatePlayer();
                         gameData.updateArea(gameData.getCurrArea());
+                        checkState();
 
-                    }
+
                 }
             });
         }
@@ -167,8 +159,8 @@ public class MarketActivity extends AppCompatActivity
         public void bind(Item inItem)
         {
             itemName.setText(inItem.getDescription());
-            itemValue.setText("V : "+Integer.toString(inItem.getValue()));
-            itemMass.setText("M/H : "+Double.toString(inItem.getMassorHealth()));
+            itemValue.setText("V : " +Integer.toString(inItem.getValue()));
+            itemMass.setText("M/H : "+ Double.toString(inItem.getMassorHealth()));
             currItem = inItem;
 
         }
@@ -176,31 +168,31 @@ public class MarketActivity extends AppCompatActivity
 
     private class PlayerAdapter extends RecyclerView.Adapter<PlayerVHolder>
     {
-       private List<Item> pdata;
+        private List<Item> pdata;
 
-       public PlayerAdapter()
-       {
-           pdata = gameData.getPlayer().getList();
-       }
+        public PlayerAdapter()
+        {
+            pdata = gameData.getPlayer().getList();
+        }
 
-       @Override
+        @Override
         public int getItemCount()
-       {
-           return pdata.size();
-       }
+        {
+            return pdata.size();
+        }
 
-       @Override
+        @Override
         public PlayerVHolder onCreateViewHolder(ViewGroup parent, int viewType)
-       {
-           LayoutInflater li = LayoutInflater.from(MarketActivity.this);
-           return new PlayerVHolder(li,parent);
-       }
+        {
+            LayoutInflater li = LayoutInflater.from(WildernessActivity.this);
+            return new PlayerVHolder(li,parent);
+        }
 
-       @Override
+        @Override
         public void onBindViewHolder(PlayerVHolder vh, int index)
-       {
-           vh.bind(pdata.get(index));
-       }
+        {
+            vh.bind(pdata.get(index));
+        }
     }
 
     private class PlayerVHolder extends RecyclerView.ViewHolder
@@ -209,8 +201,8 @@ public class MarketActivity extends AppCompatActivity
         private TextView itemValue2;
         private TextView itemMass2;
         private Button buy2;
-        private Button use2;
         private Equipment currItem2;
+        private Button use;
 
         public PlayerVHolder(LayoutInflater li, ViewGroup parent)
         {
@@ -218,9 +210,10 @@ public class MarketActivity extends AppCompatActivity
             itemName2 = (TextView)itemView.findViewById(R.id.itemName);
             itemValue2 = (TextView)itemView.findViewById(R.id.value);
             itemMass2 = (TextView)itemView.findViewById(R.id.mass);
+            use  = (Button)itemView.findViewById(R.id.use);
             buy2 = (Button)itemView.findViewById(R.id.buy);
-            use2 = (Button)itemView.findViewById(R.id.use);
-            buy2.setText("Sell");
+            buy2.setText("Drop");
+
             buy2.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -233,7 +226,6 @@ public class MarketActivity extends AppCompatActivity
                     else
                     {
                         gameData.getPlayer().setEquipmentMass(gameData.getPlayer().getEquipmentMass() - currItem2.getMassorHealth());
-                        gameData.getPlayer().setCash(gameData.getPlayer().getCash() + (int)((double)currItem2.getValue()*0.75));
                         gameData.getCurrArea().addItem(currItem2);
                         gameData.getPlayer().removeEquipment(currItem2);
                         fragA.updateUI();
@@ -241,23 +233,22 @@ public class MarketActivity extends AppCompatActivity
                         adapter1.notifyDataSetChanged();
                         gameData.updatePlayer();
                         gameData.updateArea(gameData.getCurrArea());
-
                     }
 
                 }
             });
 
-            use2.setOnClickListener(new View.OnClickListener()
+            use.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
                     if(currItem2.getDescription().equals("Portable Smell-O-Scope"))
                     {
-                        gameData.getPlayer().removeEquipment(currItem2);
-                        Intent intent = new Intent(MarketActivity.this,SmellActivity.class);
+                        Intent intent = new Intent(WildernessActivity.this,SmellActivity.class);
                         startActivityForResult(intent,REQUEST_CODE_SMELLY);
                         showMessage("Smell-O-Scope Used");
+                        gameData.getPlayer().removeEquipment(currItem2);
                         adapter.notifyDataSetChanged();
                         adapter1.notifyDataSetChanged();
 
@@ -291,6 +282,7 @@ public class MarketActivity extends AppCompatActivity
                     }
                     checkState();
 
+
                 }
             });
 
@@ -299,8 +291,8 @@ public class MarketActivity extends AppCompatActivity
         public void bind(Item inItem)
         {
             itemName2.setText(inItem.getDescription());
-            itemValue2.setText("V : "+Integer.toString(inItem.getValue()));
-            itemMass2.setText("M : "+Double.toString(inItem.getMassorHealth()));
+            itemValue2.setText("V : " + Integer.toString(inItem.getValue()));
+            itemMass2.setText("M : " + Double.toString(inItem.getMassorHealth()));
             currItem2 = (Equipment)inItem;
 
         }
@@ -318,19 +310,18 @@ public class MarketActivity extends AppCompatActivity
         if(gameData.getPlayer().getWinCount() == 3)
         {
             showMessage("Congrats You Win!");
-            startActivity(new Intent(MarketActivity.this,OpeningScreenActivity.class));
+            startActivity(new Intent(WildernessActivity.this, OpeningScreenActivity.class));
             gameData.resetGame();
-
         }
         if(gameData.getPlayer().getHealth() <= 0)
         {
             showMessage("You Lose");
-            startActivity(new Intent(MarketActivity.this,OpeningScreenActivity.class));
+            startActivity(new Intent(WildernessActivity.this,OpeningScreenActivity.class));
             gameData.resetGame();
-
         }
     }
 
 
 
 }
+

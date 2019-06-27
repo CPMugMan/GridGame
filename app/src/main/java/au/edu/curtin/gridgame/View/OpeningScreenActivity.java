@@ -1,18 +1,16 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.View;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
+
+import au.edu.curtin.gridgame.R;
 
 public class OpeningScreenActivity extends AppCompatActivity
 {
-    private ImageButton startButton;
+    private Button startButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -20,7 +18,7 @@ public class OpeningScreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opening_screen);
 
-        startButton = (ImageButton) findViewById(R.id.playbutton);
+        startButton = (Button) findViewById(R.id.playbutton);
         startButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

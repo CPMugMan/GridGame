@@ -1,21 +1,23 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.Controller;
 
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import au.edu.curtin.gridgame.GridGameSchema.PlayerTable;
-import au.edu.curtin.gridgame.GridGameSchema.AreaTable;
+import au.edu.curtin.gridgame.Model.Area;
+import au.edu.curtin.gridgame.Model.Equipment;
+import au.edu.curtin.gridgame.Model.Food;
+import au.edu.curtin.gridgame.Model.GridGameCursor;
+import au.edu.curtin.gridgame.Model.GridGameDbHelper;
+import au.edu.curtin.gridgame.Model.GridGameSchema.PlayerTable;
+import au.edu.curtin.gridgame.Model.GridGameSchema.AreaTable;
+import au.edu.curtin.gridgame.Model.Item;
+import au.edu.curtin.gridgame.Model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static android.content.ContentValues.TAG;
 
 
 public class GameData

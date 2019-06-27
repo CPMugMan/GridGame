@@ -1,11 +1,9 @@
-package au.edu.curtin.gridgame;
-
-import android.util.Log;
+package au.edu.curtin.gridgame.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import au.edu.curtin.gridgame.R;
 
 public class Area
 {

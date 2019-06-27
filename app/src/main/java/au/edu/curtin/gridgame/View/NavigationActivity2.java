@@ -1,4 +1,4 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.View;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -8,28 +8,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import au.edu.curtin.gridgame.Controller.GameData;
+import au.edu.curtin.gridgame.Model.Area;
+import au.edu.curtin.gridgame.R;
 
 public class NavigationActivity2 extends AppCompatActivity
 {
     private GameData gameData;
     private AlertDialog.Builder builder;
 
-    private ImageButton northButton;
-    private ImageButton southButton;
-    private ImageButton eastButton;
-    private ImageButton westButton;
+    private Button northButton;
+    private Button southButton;
+    private Button eastButton;
+    private Button westButton;
+    private Button option;
 
     private AreaInfoFragment fragA;
     private StatusBarFragment fragB;
     private MyAdapter adapter;
+
+    private static final int REQUEST_CODE_WILDERNESS = 0;
+    private static final int REQUEST_CODE_MARKET = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -151,15 +156,37 @@ public class NavigationActivity2 extends AppCompatActivity
             }
         });
 
+        option.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent;
+                if(gameData.getCurrArea().getTown() == false)
+                {
+                    intent = new Intent(NavigationActivity2.this, WildernessActivity.class);
+                    startActivityForResult(intent,REQUEST_CODE_WILDERNESS);
+                }
+                else
+                {
+                    intent = new Intent(NavigationActivity2.this,MarketActivity.class);
+                    startActivityForResult(intent,REQUEST_CODE_MARKET);
+                }
+
+
+            }
+        });
+
 
     }
 
     public void buttonSetup()
     {
-        northButton = (ImageButton)findViewById(R.id.upArrow);
-        southButton = (ImageButton)findViewById(R.id.downArrow);
-        eastButton = (ImageButton) findViewById(R.id.leftArrow);
-        westButton = (ImageButton)findViewById(R.id.rightArrow);
+        northButton = (Button)findViewById(R.id.upArrow);
+        southButton = (Button)findViewById(R.id.downArrow);
+        eastButton = (Button) findViewById(R.id.leftArrow);
+        westButton = (Button)findViewById(R.id.rightArrow);
+        option = (Button)findViewById(R.id.button2);
 
     }
 
@@ -282,6 +309,18 @@ public class NavigationActivity2 extends AppCompatActivity
                 star.setImageResource(0);
             }
 
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnData)
+    {
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_WILDERNESS || requestCode == REQUEST_CODE_MARKET)
+        {
+            updateUI();
+            fragB.updateUI();
+            fragA.updateUI();
         }
 
     }

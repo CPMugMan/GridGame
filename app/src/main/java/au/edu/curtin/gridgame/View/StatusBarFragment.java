@@ -1,4 +1,4 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+
+import au.edu.curtin.gridgame.Controller.GameData;
+import au.edu.curtin.gridgame.R;
+import au.edu.curtin.gridgame.View.OpeningScreenActivity;
 
 public class StatusBarFragment extends Fragment
 {
@@ -42,7 +46,7 @@ public class StatusBarFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(getContext(),OpeningScreenActivity.class));
+                startActivity(new Intent(getContext(), OpeningScreenActivity.class));
                 data.resetGame();
 
             }

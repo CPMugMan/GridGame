@@ -1,9 +1,11 @@
-package au.edu.curtin.gridgame;
+package au.edu.curtin.gridgame.Model;
 
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import au.edu.curtin.gridgame.Model.Equipment;
 
 import static android.content.ContentValues.TAG;
 
